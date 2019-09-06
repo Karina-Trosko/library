@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<nav>
+    <a th:href="@{/user}">List Of users</a>
+    <a th:href="@{/requestsList}">List of requests</a>
+    <a th:href="@{/books}">Books</a>
+    <a th:href="@{/authors}">Authors</a>
+    <a th:href="@{/book/create}">Add book</a>
+    <a th:href="@{/author/create}">Add author</a>
+</nav>
+<div class="Blocks" th:each="user : ${users}">
+    <div class="divBookStyle block">
+        <div>
+            <div th:text="${user.username}"></div>
+            <div th:each = "urole : ${user.roles}">
+            <div th:text="${urole}"></div>
+            </div>
+            <div th:if="${user.name!=null}" th:text="${user.name}"></div>
+            <div th:if="${user.surname!=null}" th:text="${user.surname}"></div>
+            <div th:if="${user.contactDetails!=null}" th:text="${user.contactDetails}"></div>
+        </div>
+        <div>
+            <a th:href="'/user/'+${user.id}">edit</a>
+
+
+                <form th:action="@{/user/delete}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input class="buttonStyle buttonStyle-round" type="submit" value="Delete"/>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

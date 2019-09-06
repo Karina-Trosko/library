@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+
+</head>
+<body>
+<nav>
+    <a th:if="${isAd}" th:href="@{/user}">List Of users</a>
+    <a th:if="${isAd}" th:href="@{/requestsList}">List of requests</a>
+    <a th:href="@{/books}">Books</a>
+    <a th:href="@{/authors}">Authors</a>
+    <a th:if="${isAd}" th:href="@{/book/create}">Add book</a>
+    <a th:if="${isAd}" th:href="@{/author/create}">Add author</a>
+</nav>
+<div class="Blocks" th:each="author : ${authors}">
+   <div class="divBookStyle block">
+       <div>
+    <div>Name: <div th:text="${author.firstName}"></div></div>
+    <div>Surname: <div th:text="${author.secondName}"></div> </div>
+       </div>
+
+       <div>
+       <!--<form th:action="@{/author/delete}" method="post">
+           <input type="hidden" name="id" th:value="${author.id}"/>
+           <input class="buttonStyle buttonStyle-round" type="submit" value="Delete"/>
+       </form>-->
+       <a th:if="${isAd}"th:href="'/author/'+${author.id}">update</a>
+       </div>
+   </div>
+    </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>

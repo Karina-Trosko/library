@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+</head>
+<body>
+<p style="margin-left: 35%;margin-right: 35%;margin-top: 5%">Add new reader</p>
+<p style="margin-left: 35%;margin-right: 35%;margin-top: 1%" th:text="${message}"/>
+
+<form style="margin-left: 35%;margin-right: 35%;margin-top: 5%" th:action="@{/registration}" method="post" class="loginFormStyle">
+    <div><label class="labelStyle"> User Name : <input class="inputStyle" type="text" name="username"/> </label></div>
+    <div><label class="labelStyle"> Password: <input class="inputStyle" type="password" name="password"/> </label></div>
+    <div><label class="labelStyle"> Name : <input class="inputStyle" type="text" name="name"/> </label></div>
+    <div><label class="labelStyle"> Surname : <input class="inputStyle" type="text" name="surname"/> </label></div>
+    <div><label class="labelStyle"> Contact details : <input class="inputStyle" type="text" name="contactDetails"/> </label></div>
+
+    <div><input class="buttonStyle buttonStyle-round" type="submit" value="Sing in"/></div>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+</head>
+<body>
+<nav>
+    <a th:href="@{/user}">List Of users</a>
+    <a th:href="@{/requestsList}">List of requests</a>
+    <a th:href="@{/books}">Books</a>
+    <a th:href="@{/authors}">Authors</a>
+    <a th:href="@{/book/create}">Add book</a>
+    <a th:href="@{/author/create}">Add author</a>
+</nav>
+<p style="margin-left: 35%;margin-right: 35%;margin-top: 5%" th:text="${message}"/>
+<form style="margin-left: 35%;margin-right: 35%;margin-top: 5%" th:action="@{/book}" method="post" class="loginFormStyle">
+    <div><label class="labelStyle"  for="title">Title: <input class="inputStyle" type="text" id="title" name="title"/></label></div>
+
+
+   <div> <label class="labelStyle"  for="author">Author: </label>
+
+    <select name="authorId" id="author">
+        <option>Select</option>
+        <option th:each="aurhor : ${authors}" th:value="${aurhor.id}" th:text="${aurhor.firstName} +' '+ ${aurhor.secondName}">
+        </option>
+    </select>
+   </div>
+    <div>
+    <label class="labelStyle"  for="literatureType">Type of Literature: </label>
+
+    <select name="literatureTypeId" id="literatureType">
+        <option>Select</option>
+        <option th:each="literatureType:${literatureTypes}" th:value="${literatureType.id}" th:text="${literatureType.name}">
+        </option>
+    </select>
+    </div>
+    <div>
+    <label class="labelStyle"  for="genre">Genre: </label>
+    <select name="genreId" id="genre">
+        <option>Select</option>
+        <option th:each="genre:${genres}" th:value="${genre.id}" th:text="${genre.name}">
+        </option>
+    </select>
+    </div>
+
+
+
+    <div><label class="labelStyle"  for="yearOfPublishing">Year of publishing: <input class="inputStyle" type="number" id="yearOfPublishing" min="1500" max="2050" name="yearOfPublishing"/></label></div>
+
+
+   <div> <label class="labelStyle"  for="numbOfPages">Number of pages: <input class="inputStyle" type="number" id="numbOfPages" min="1" max="3000"  name="numbOfPages" > </label></div>
+
+
+    <div> <label class="labelStyle"  for="publishingHouse">Publishing house:  <input class="inputStyle" type="text" id="publishingHouse" name="publishingHouse"></label></div>
+
+
+    <div><label class="labelStyle"  for="here">In stock <input  type="checkbox" id="here" name="here"  /></label></div>
+
+
+   <div> <label class="labelStyle"  for="onlyInReadingRoom">Only in reading room <input type="checkbox" id="onlyInReadingRoom" name="onlyInReadingRoom"  /></label></div>
+
+
+
+
+
+    <input  class="buttonStyle buttonStyle-round" type="submit" value="Add"/>
+</form>
+</body>
+</html>

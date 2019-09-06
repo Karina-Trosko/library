@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+</head>
+<body>
+
+<form style="margin-left: 35%;margin-right: 35%;margin-top: 5%" th:action="@{/login}" method="post" class="loginFormStyle">
+    <div><label class="labelStyle" > User Name : <input class="inputStyle" type="text" name="username"/> </label></div>
+    <div><label class="labelStyle" > Password: <input class="inputStyle"type="password" name="password"/> </label></div>
+    <div><input class="buttonStyle buttonStyle-round" type="submit" value="Sign In"/></div>
+
+
+<a style="margin-left: 35%"  th:href="@{/registration}">Add new reader</a>
+</form>
+</body>
+</html>

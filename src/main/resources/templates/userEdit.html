@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+</head>
+<body>
+<nav>
+    <a th:href="@{/user}">List Of users</a>
+    <a th:href="@{/requestsList}">List of requests</a>
+    <a th:href="@{/books}">Books</a>
+    <a th:href="@{/authors}">Authors</a>
+    <a th:href="@{/book/create}">Add book</a>
+    <a th:href="@{/author/create}">Add author</a>
+</nav>
+<form style="margin-left: 35%;margin-right: 35%;margin-top: 5%" action="#" th:action="@{/user/edit}" th:object="${user}"  method="post" class="loginFormStyle">
+    <div><input type="hidden" th:field="*{id}"/></div>
+    <div><input class="inputStyle" type="text" th:field="*{username}" /></div>
+
+    <div><input class="inputStyle" type="hidden" th:field="*{password}" /></div>
+    <div><input class="inputStyle" type="hidden"  th:field="*{active}"  /></div>
+    <div><input type="hidden" th:field="*{roles}">
+    <select multiple size="2" name="roles"  th:field="*{roles}" >
+        <option th:each="role:${roles}" th:value="${role}" th:text="${role.name()}">
+        </option>
+    </select>
+    </div>
+
+   <input class="buttonStyle buttonStyle-round" type="submit" value="Update"/>
+</form>
+</body>
+</html>

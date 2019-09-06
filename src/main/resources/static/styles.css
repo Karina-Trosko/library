@@ -1,0 +1,98 @@
+body {
+    background: url('/static/fon3.jpg') no-repeat fixed;
+    background-size: cover;
+    /*background-color: #5e1d03;*/
+   background-color: #2f3650;
+    /*color: #78ab46;*/
+}
+h1 {
+    color: rgba(255, 245, 235, 0.99);
+    font-size: 25px;
+}
+p {
+    color: rgba(255, 245, 235, 0.99);
+    font-size: 25px;
+}
+a:link,
+a:visited {
+
+    color: rgb(255, 238, 238);
+    font-size: 40px;
+
+    text-decoration: none;
+    margin-left: 4%;
+}
+
+a:hover,
+a:active {
+    /*color: rgb(166, 124, 116);*/
+    background: rgb(249, 231, 215);
+    color: rgb(10, 10, 52);
+    border-color: rgb(10, 10, 52);
+    border-radius: 20px;
+}
+.inputStyle{
+    color: #f9e7d7;
+    background-color: #0a0a34;
+    border-color: #f9e7d7;
+    font-size: 30px;
+
+}
+.labelStyle{
+    color: #f9e7d7;
+    font-size: 30px;
+    padding-top: 3%;
+}
+.loginFormStyle{
+    padding-top: 3%;
+    background: rgba(10, 10, 52, 0.78);
+}
+.buttonStyle{
+    background: rgb(249,231,215);
+    color: rgba(10, 10, 52, 0.97);
+    font-size: 20px;
+    border-color: rgb(10, 10, 52);
+}
+.buttonStyle:hover,buttonStyle:active{
+
+    background: rgb(10, 10, 52);
+    color: rgb(249,231,215);
+    border-color: rgb(249,231,215);
+}
+.buttonStyle-round{
+    border-radius: 20px;
+}
+.divBookStyle{
+    background: rgba(10, 10, 52, 0.78);
+    color: rgb(249,231,215);
+    font-size: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+/*form{
+    background: rgba(10, 10, 52, 0.78);
+    color: rgb(249,231,215);
+    font-size: 10px;
+}*/
+nav {
+    background: linear-gradient(rgba(22, 163, 151, 0), rgb(10, 10, 52));
+    padding: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.Blocks {
+    display: flex;
+    /* в ряд */
+    flex-direction: column;
+    margin: 0% 0% 0% 0%;
+}
+
+.block {
+    display: flex;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    justify-content: space-between;
+    padding-right: 10px;
+    padding-left: 10px;
+}
