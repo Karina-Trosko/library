@@ -14,26 +14,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@PreAuthorize("hasAuthority('EMPLOYEE')")
+
 public class IssuanceRequestController {
     @Autowired
     private IssuanceRequestRepository issuanceRequestRepository;
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @GetMapping("/requestsList")
-    public String requestList(Model model,@AuthenticationPrincipal User user){
+    public String requestList(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
-        model.addAttribute("isEmpl",user.getRoles().contains(Role.EMPLOYEE));
-        model.addAttribute("requests",issuanceRequestRepository.findAll());
+        model.addAttribute("isEmpl", user.getRoles().contains(Role.EMPLOYEE));
+        model.addAttribute("requests", issuanceRequestRepository.findBySend(true));
         return "requestsList";
     }
 
     @PostMapping("/request/delete")
-    public String delete(@RequestParam("id") int id) {
+    public String delete(@RequestParam("id") int id, @AuthenticationPrincipal User user) {
         issuanceRequestRepository.findById(id).get().getBook().setHere(true);
         issuanceRequestRepository.deleteById(id);
-
-        return "redirect:/requestsList";
+        if (user.getRoles().contains(Role.EMPLOYEE))
+            return "redirect:/requestsList";
+        return "redirect:/user/RequestsList";
+    }
+    @PostMapping("/sendRequest")
+    public String sendRequest(@RequestParam("id") int id) {
+        IssuanceRequest ir = issuanceRequestRepository.findById(id).get();
+        ir.setSend(true);
+        issuanceRequestRepository.save(ir);
+        return "redirect:/user/RequestsList";
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/request/return")
     public String requestReturn(@RequestParam("id") int id) {
 
@@ -42,18 +53,19 @@ public class IssuanceRequestController {
         return "redirect:/requestsList";
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/request/search")
-    public String search(@RequestParam String search, Model model,@AuthenticationPrincipal User user) {
+    public String search(@RequestParam String search, Model model, @AuthenticationPrincipal User user) {
         List<IssuanceRequest> ir;
-        if(search!=null&& !search.isEmpty()){
-            ir= issuanceRequestRepository.findByName(search);
+        if (search != null && !search.isEmpty()) {
+            ir = issuanceRequestRepository.findByName(search);
         } else {
-            ir= issuanceRequestRepository.findAll();
+            ir = issuanceRequestRepository.findAll();
         }
 
         model.addAttribute("requests", ir);
-        model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
-        model.addAttribute("isEmpl",user.getRoles().contains(Role.EMPLOYEE));
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
+        model.addAttribute("isEmpl", user.getRoles().contains(Role.EMPLOYEE));
 
         return "requestsList";
     }

@@ -22,10 +22,10 @@
 
     <!--<a th:href="@{/user}">List of users</a>-->
 </form>
-<form style="margin: 1% 20% 0% 20%" class="loginFormStyle" th:action="@{/request/search}" method="post">
-    <input class="inputStyle" type="text" name="search" placeholder="Search...">
-    <button type="submit" class="buttonStyle-round buttonStyle">Search</button>
-</form>
+<!--<form style="margin: 1% 20% 0% 20%" class="loginFormStyle" th:action="@{/request/search}" method="post">-->
+    <!--<input class="inputStyle" type="text" name="search" placeholder="Search...">-->
+    <!--<button type="submit" class="buttonStyle-round buttonStyle">Search</button>-->
+<!--</form>-->
 <div class="Blocks" th:each="req : ${requests}">
     <div class="divBookStyle block">
         <div>
@@ -38,26 +38,24 @@
         </div>
         <div>
             <div>
-                <div>
+                <div >
                     <form th:action="@{/request/delete}" method="post">
                         <input type="hidden" name="id" th:value="${req.id}"/>
                         <input class="buttonStyle buttonStyle-round" type="submit" value="Delete"/>
                     </form>
                 </div>
-
-                <!--<div>
-                <form th:if="${req.got!=true}"  th:action="@{/request/get}" method="post">
-                    <input type="hidden" name="id" th:value="${req.id}"/>
-                  &lt;!&ndash;  <div th:text="${req.got}"></div>&ndash;&gt;
-                    <input class="buttonStyle buttonStyle-round" type="submit" value="OK"/>
-                </form>
-            </div>-->
-                <div>
-                    <form th:action="@{/request/return}" method="post">
+                <div th:if="!${req.send}">
+                    <form  th:action="@{/sendRequest}" method="post">
                         <input type="hidden" name="id" th:value="${req.id}"/>
-                        <input class="buttonStyle buttonStyle-round" type="submit" value="Return"/>
+                        <input class="buttonStyle buttonStyle-round" type="submit" value="Send"/>
                     </form>
                 </div>
+                <!--<div>-->
+                    <!--<form th:action="@{/request/return}" method="post">-->
+                        <!--<input type="hidden" name="id" th:value="${req.id}"/>-->
+                        <!--<input class="buttonStyle buttonStyle-round" type="submit" value="Return"/>-->
+                    <!--</form>-->
+                <!--</div>-->
             </div>
         </div>
     </div>

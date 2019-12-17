@@ -141,6 +141,8 @@ public class BookController {
         book.setHere(false);
         IssuanceRequest ir = new IssuanceRequest(book.getTitle(), req, book);
         ir.setValid(true);
+        ir.setAccept(false);
+        ir.setSend(false);
         issuanceRequestRepository.save(ir);
 
 
