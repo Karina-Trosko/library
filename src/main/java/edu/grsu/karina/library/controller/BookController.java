@@ -45,6 +45,7 @@ public class BookController {
         boolean isEmpl = req.getRoles().contains(Role.EMPLOYEE);
         model.addAttribute("isEmpl", isEmpl);
         model.addAttribute("isAd", req.getRoles().contains(Role.ADMIN));
+        model.addAttribute("isUs",User.isUser(req));
         return "books";
     }
 
@@ -132,11 +133,12 @@ public class BookController {
     @PostMapping("/book/delete")
     public String delete(@RequestParam("id") int id) {
         bookRepository.deleteById(id);
+
         return "redirect:/books";
     }
 
     @PostMapping("/book/choose")
-    public String choose(@RequestParam("id") int id, @AuthenticationPrincipal User req) {
+    public String choose(@RequestParam("id") int id, @AuthenticationPrincipal User req,Model model) {
         Book book = bookRepository.findById(id).get();
         book.setHere(false);
         IssuanceRequest ir = new IssuanceRequest(book.getTitle(), req, book);
@@ -144,7 +146,7 @@ public class BookController {
         ir.setAccept(false);
         ir.setSend(false);
         issuanceRequestRepository.save(ir);
-
+        model.addAttribute("isUs",User.isUser(req));
 
         return "redirect:/books";
     }
@@ -163,6 +165,7 @@ public class BookController {
             books = bookRepository.findAll();
         }
 model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
+        model.addAttribute("isUs",User.isUser(user));
         model.addAttribute("books", books);
 
         return "books";

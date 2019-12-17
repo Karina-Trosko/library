@@ -52,7 +52,14 @@
                     <input class="buttonStyle buttonStyle-round" type="submit" value="OK"/>
                 </form>
             </div>-->
-                <div>
+
+                <div th:if="!${req.accept}">
+                    <form th:action="@{/acceptRequest}" method="post">
+                        <input type="hidden" name="id" th:value="${req.id}"/>
+                        <input class="buttonStyle buttonStyle-round" type="submit" value="Give out"/>
+                    </form>
+                </div>
+                <div th:if="${req.accept}">
                     <form th:action="@{/request/return}" method="post">
                         <input type="hidden" name="id" th:value="${req.id}"/>
                         <input class="buttonStyle buttonStyle-round" type="submit" value="Return"/>

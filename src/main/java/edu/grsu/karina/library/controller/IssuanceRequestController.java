@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -42,6 +43,14 @@ public class IssuanceRequestController {
         ir.setSend(true);
         issuanceRequestRepository.save(ir);
         return "redirect:/user/RequestsList";
+    }
+    @PostMapping("/acceptRequest")
+    public String acceptRequest(@RequestParam("id") int id) {
+        IssuanceRequest ir = issuanceRequestRepository.findById(id).get();
+        ir.setAccept(true);
+        ir.setDate(new Date());
+        issuanceRequestRepository.save(ir);
+        return "redirect:/requestsList";
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
