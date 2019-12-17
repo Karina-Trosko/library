@@ -59,7 +59,8 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/addemployee")
-    public String registration() {
+    public String addEmpl(Model model) {
+        model.addAttribute("isAd",true);
         return "employeesAdd";
     }
 
@@ -67,9 +68,11 @@ public class UserController {
     @PostMapping("/addemployee")
     public String addEmployee(User user, Model model) {//Map<String, Object> model
         User userFromDB = userRepository.findByUsername(user.getUsername());
+        model.addAttribute("isAd",true);
         if (userFromDB != null) {
             model.addAttribute("message", "Employee exists!"); //("message", "User exists!");
             //model.put("message", "User exists!");
+
             return "employeesAdd";
         }
         if (user.getUsername() == "" || user.getPassword() == "") {
@@ -87,6 +90,10 @@ public class UserController {
     public String userSave(@ModelAttribute User req, @AuthenticationPrincipal User userCurrent, Model model) {
         User user = userRepository.findById(req.getId()).get();
         user.setUsername(req.getUsername());
+        user.setName(req.getName());
+        user.setSurname(req.getSurname());
+        user.setPassword(req.getPassword());
+        user.setContactDetails(req.getContactDetails());
         model.addAttribute("isAd", userCurrent.getRoles().contains(Role.ADMIN));
         user.setRoles(req.getRoles());
         userRepository.save(user);

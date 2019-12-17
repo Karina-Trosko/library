@@ -21,19 +21,21 @@
 
     <!--<a th:href="@{/user}">List of users</a>-->
 </form>
-<form style="margin-left: 35%;margin-right: 35%;margin-top: 5%" action="#" th:action="@{/user/edit}" th:object="${user}"
+<form style="margin-left:35%;margin-right: 35%;margin-top: 5%" action="#" th:action="@{/user/edit}" th:object="${user}"
       method="post" class="loginFormStyle">
     <div><input type="hidden" th:field="*{id}"/></div>
-    <div><input class="inputStyle" type="text" th:field="*{username}"/></div>
-
+    <div><input class="inputStyle" placeholder="Username:" type="text" th:field="*{username}"/></div>
+    <div><input class="inputStyle" placeholder="Name: " type="text" th:field="*{name}"/></div>
+    <div><input class="inputStyle" placeholder="Surname:" type="text" th:field="*{surname}"/></div>
+    <div><input class="inputStyle" placeholder="Contact details:" type="text" th:field="*{contactDetails}"/></div>
     <div><input class="inputStyle" type="hidden" th:field="*{password}"/></div>
     <div><input class="inputStyle" type="hidden" th:field="*{active}"/></div>
-    <!--<div><input type="hidden" th:field="*{roles}">-->
-        <!--&lt;!&ndash;<select multiple size="2" name="roles"  th:field="*{roles}" >&ndash;&gt;-->
-        <!--&lt;!&ndash;<option th:each="role:${roles}" th:value="${role}" th:text="${role.name()}">&ndash;&gt;-->
-        <!--&lt;!&ndash;</option>&ndash;&gt;-->
-        <!--&lt;!&ndash;</select>&ndash;&gt;-->
-    <!--</div>-->
+    <div><input type="hidden" th:field="*{roles}">
+        <!--<select multiple size="2" name="roles"  th:field="*{roles}" >-->
+        <!--<option th:each="role:${roles}" th:value="${role}" th:text="${role.name()}">-->
+        <!--</option>-->
+        <!--</select>-->
+    </div>
 
     <input class="buttonStyle buttonStyle-round" type="submit" value="Update"/>
 </form>
