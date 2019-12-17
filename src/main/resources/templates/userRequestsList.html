@@ -33,10 +33,9 @@
 <div class="Blocks" th:each="req : ${requests}">
     <div class="divBookStyle block">
         <div>
-            <p>Name: </p>
+            <p>Book: </p>
             <div th:text="${req.name}"></div>
-            <p>User name: </p>
-            <div th:text="${req.reader.username}"></div>
+            <div th:text="${req.book.author.firstName} + ' '+ ${req.book.author.secondName} "></div>
             <p th:if="${req.accept}">Date: </p>
             <div th:if="${req.accept}" th:text="${req.date}"></div>
         </div>
