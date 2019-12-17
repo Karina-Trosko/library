@@ -18,51 +18,63 @@ import java.util.Map;
 public class AuthorController {
     @Autowired
     private AuthorRepository authorRepository;
+
     @GetMapping("/authors")
-    public String requestList(Model model, @AuthenticationPrincipal User req){
+    public String requestList(Model model, @AuthenticationPrincipal User req) {
         boolean isAd = req.getRoles().contains(Role.ADMIN);
+        model.addAttribute("isEmpl", req.getRoles().contains(Role.EMPLOYEE));
         model.addAttribute("isAd", isAd);
-        model.addAttribute("authors",authorRepository.findAll());
+        model.addAttribute("authors", authorRepository.findAll());
         return "authors";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @GetMapping("/author/{id}")
-    public String edit(@PathVariable int id, Model model) {
+    public String edit(@PathVariable int id, Model model, @AuthenticationPrincipal User user) {
         Author author = authorRepository.findById(id).get();
-        model.addAttribute("author",author );
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
+        model.addAttribute("author", author);
         return "authorupdate";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/author/update")
-    public String authorSave(@ModelAttribute Author req/*, Map<String,String> form*/) {
+    public String authorSave(@ModelAttribute Author req, @AuthenticationPrincipal User user, Model model) {
         Author author = authorRepository.findById(req.getId()).get();
         author.setFirstName(req.getFirstName());
         author.setSecondName(req.getSecondName());
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
         authorRepository.save(author);
         return "success";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/author/delete")
     public String delete(@RequestParam("id") int id) {
         authorRepository.deleteById(id);
         return "redirect:/authors";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/author/create")
-    public String authorCreate( Model model) {
-return "authorcreate";
-    }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/author")
-    public String create(@ModelAttribute AuthorRequest req, Map<String,Object> model) {
-        Author author = new Author();
 
-        if(req.getSecondName()==null||req.getFirstName()==null){
-            model.put( "message", "User exists!");
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @GetMapping("/author/create")
+    public String authorCreate(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
+        return "authorcreate";
+    }
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PostMapping("/author")
+    public String create(@ModelAttribute AuthorRequest req, Model model, @AuthenticationPrincipal User user) {
+        Author author = new Author();
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
+        if (req.getSecondName() == null || req.getFirstName() == null) {
+            model.addAttribute("message", "User exists!");
             return "authorcreate";
         }
         author.setSecondName(req.getSecondName());
         author.setFirstName(req.getFirstName());
+        //author.setDate(req.getDate());
         authorRepository.save(author);
 
         return "success";

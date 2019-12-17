@@ -1,9 +1,12 @@
 package edu.grsu.karina.library.controller;
 
 import edu.grsu.karina.library.model.IssuanceRequest;
+import edu.grsu.karina.library.model.Role;
+import edu.grsu.karina.library.model.User;
 import edu.grsu.karina.library.repository.IssuanceRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAuthority('EMPLOYEE')")
 public class IssuanceRequestController {
     @Autowired
     private IssuanceRequestRepository issuanceRequestRepository;
     @GetMapping("/requestsList")
-    public String requestList(Model model){
+    public String requestList(Model model,@AuthenticationPrincipal User user){
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
+        model.addAttribute("isEmpl",user.getRoles().contains(Role.EMPLOYEE));
         model.addAttribute("requests",issuanceRequestRepository.findAll());
         return "requestsList";
     }
@@ -38,7 +43,7 @@ public class IssuanceRequestController {
     }
 
     @PostMapping("/request/search")
-    public String search(@RequestParam String search, Model model) {
+    public String search(@RequestParam String search, Model model,@AuthenticationPrincipal User user) {
         List<IssuanceRequest> ir;
         if(search!=null&& !search.isEmpty()){
             ir= issuanceRequestRepository.findByName(search);
@@ -47,6 +52,8 @@ public class IssuanceRequestController {
         }
 
         model.addAttribute("requests", ir);
+        model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
+        model.addAttribute("isEmpl",user.getRoles().contains(Role.EMPLOYEE));
 
         return "requestsList";
     }

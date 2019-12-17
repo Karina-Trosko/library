@@ -5,49 +5,103 @@ import edu.grsu.karina.library.model.User;
 import edu.grsu.karina.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
+
 public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @GetMapping
-    public String userList(Model model){
-        model.addAttribute("users",userRepository.findAll());
+    public String userList(Model model, @AuthenticationPrincipal User user) {
+//        model.addAttribute("users", userRepository.findByRoleCount(1));
+        model.addAttribute("users", getUsersByRolesCount(1));
+        model.addAttribute("isAd", user.getRoles().contains(Role.ADMIN));
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @GetMapping("{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable Long id, Model model,@AuthenticationPrincipal User userCurrent) {
         User user = userRepository.findById(id).get();
         model.addAttribute("user", user);
-        model.addAttribute("roles", Role.values());
+        //model.addAttribute("roles", Role.values());
+        model.addAttribute("isAd", userCurrent.getRoles().contains(Role.ADMIN));
         return "userEdit";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/addemployee")
+    public String registration() {
+        return "employeesAdd";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/addemployee")
+    public String addEmployee(User user, Model model) {//Map<String, Object> model
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+        if (userFromDB != null) {
+            model.addAttribute("message", "Employee exists!"); //("message", "User exists!");
+            //model.put("message", "User exists!");
+            return "employeesAdd";
+        }
+        if (user.getUsername() == "" || user.getPassword() == "") {
+            //model.put("message", "Username and password are required");
+            return "employeesAdd";
+        }
+        user.setActive(true);
+        user.setRoles(new HashSet<Role>(Arrays.asList(Role.USER, Role.EMPLOYEE)));
+        userRepository.save(user);
+        return "success";
+    }
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/edit")
-    public String userSave(@ModelAttribute User req/*, Map<String,String> form*/) {
+    public String userSave(@ModelAttribute User req,@AuthenticationPrincipal User userCurrent, Model model) {
         User user = userRepository.findById(req.getId()).get();
         user.setUsername(req.getUsername());
-
+        model.addAttribute("isAd", userCurrent.getRoles().contains(Role.ADMIN));
         user.setRoles(req.getRoles());
         userRepository.save(user);
         return "success";
     }
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/delete")
     public String delete(@RequestParam("id") long id) {
         userRepository.deleteById(id);
         return "redirect:/books";
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/employeesList")
+    public String employeeList(Model model) {
+//        model.addAttribute("users", userRepository.findByRoleCount(1));
+        model.addAttribute("users", getUsersByRolesCount(2));
+
+        return "employeeList";
+    }
+
+    public List<User> getUsersByRolesCount(int count) {
+        List<User> allusers = userRepository.findAll();
+        List<User> users = new ArrayList<User>();
+        for (int i = 0; i < allusers.size(); i++) {
+            if (allusers.get(i).getRoleCount() == count) {
+                users.add(allusers.get(i));
+            }
+        }
+        return users;
+    }
+
+
 }

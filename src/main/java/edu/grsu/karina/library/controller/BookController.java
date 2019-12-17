@@ -35,29 +35,32 @@ public class BookController {
     UserRepository userRepository;
 
     @GetMapping("/books")
-    public String books(@RequestParam( required=false) String name, Model model, @AuthenticationPrincipal User req) {
+    public String books(@RequestParam(required = false) String name, Model model, @AuthenticationPrincipal User req) {
 
         model.addAttribute("authors", authorRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
-        model.addAttribute("literatureTypes",literatureTypeRepository.findAll());
-        model.addAttribute("genres",genreRepository.findAll());
+        model.addAttribute("literatureTypes", literatureTypeRepository.findAll());
+        model.addAttribute("genres", genreRepository.findAll());
 
-        boolean isAd = req.getRoles().contains(Role.ADMIN);
-        model.addAttribute("isAd", isAd);
-       return "books";
+        boolean isEmpl = req.getRoles().contains(Role.EMPLOYEE);
+        model.addAttribute("isEmpl", isEmpl);
+        model.addAttribute("isAd", req.getRoles().contains(Role.ADMIN));
+        return "books";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/book")
-    public String create(@ModelAttribute BookRequest req, Map<String,Object> model) {
+    public String create(@ModelAttribute BookRequest req, Model model, @AuthenticationPrincipal User user) {
         Book book = new Book();
         Author author = authorRepository.findById(req.getAuthorId()).get();
         Genre genre = genreRepository.findById(req.getGenreId()).get();
+        model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
         LiteratureType literatureType = literatureTypeRepository.findById(req.getLiteratureTypeId()).get();
-        if(req.getPublishingHouse()==null||req.getTitle()==null||author==null||literatureType==null||genre==null)
-        {
-            model.put( "message", "All fields are requaet!");
+        if (req.getPublishingHouse() == null || req.getTitle() == null || author == null || literatureType == null || genre == null) {
+            model.addAttribute("message", "All fields are requaet!");
             return "bookcreat";
         }
+
         book.setTitle(req.getTitle());
         book.setYearOfPublishing(req.getYearOfPublishing());
         book.setAuthor(author);
@@ -71,9 +74,10 @@ public class BookController {
         bookRepository.save(book);
         return "success";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @GetMapping("/book/create")
-    public String bookCreate( Model model) {
+    public String bookCreate(Model model,@AuthenticationPrincipal User user) {
 
         List<Author> authors = authorRepository.findAll();
         List<LiteratureType> literatureTypes = literatureTypeRepository.findAll();
@@ -83,13 +87,15 @@ public class BookController {
         model.addAttribute("authors", authors);
         model.addAttribute("literatureTypes", literatureTypes);
         model.addAttribute("genres", genres);
+        model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
 
 
         return "bookcreat";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @GetMapping("/book/{id}")
-    public String book(@PathVariable int id, Model model,@AuthenticationPrincipal User req) {
+    public String book(@PathVariable int id, Model model, @AuthenticationPrincipal User req) {
         Book book = bookRepository.findById(id).get();
         List<Author> authors = authorRepository.findAll();
         List<LiteratureType> literatureTypes = literatureTypeRepository.findAll();
@@ -99,15 +105,17 @@ public class BookController {
         model.addAttribute("authors", authors);
         model.addAttribute("literatureTypes", literatureTypes);
         model.addAttribute("genres", genres);
+        model.addAttribute("isAd",req.getRoles().contains(Role.ADMIN));
 
 
         return "book";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/book/update")
-    public String update(@ModelAttribute Book req) {
-        Book book = bookRepository.findById(req.getId()).get();
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PostMapping("/book/update")
+    public String update(@ModelAttribute Book req, Model model,@AuthenticationPrincipal User user ) {
+        model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
+        Book book = bookRepository.findById(req.getId()).get();
         book.setTitle(req.getTitle());
         book.setLiteratureType(req.getLiteratureType());
         book.setOnlyInReadingRoom(req.getOnlyInReadingRoom());
@@ -119,7 +127,8 @@ public class BookController {
         bookRepository.save(book);
         return "success";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping("/book/delete")
     public String delete(@RequestParam("id") int id) {
         bookRepository.deleteById(id);
@@ -130,7 +139,7 @@ public class BookController {
     public String choose(@RequestParam("id") int id, @AuthenticationPrincipal User req) {
         Book book = bookRepository.findById(id).get();
         book.setHere(false);
-        IssuanceRequest ir = new IssuanceRequest(book.getTitle(),req,book);
+        IssuanceRequest ir = new IssuanceRequest(book.getTitle(), req, book);
         ir.setValid(true);
         issuanceRequestRepository.save(ir);
 
@@ -144,15 +153,15 @@ public class BookController {
     }
 
     @PostMapping("search")
-    public String search(@RequestParam String search, Model model) {
+    public String search(@RequestParam String search, Model model,@AuthenticationPrincipal User user) {
         List<Book> books;
-        if(search!=null&& !search.isEmpty()){
-            books= bookRepository.findByTitle(search);
+        if (search != null && !search.isEmpty()) {
+            books = bookRepository.findByTitle(search);
         } else {
             books = bookRepository.findAll();
         }
-
-            model.addAttribute("books", books);
+model.addAttribute("isAd",user.getRoles().contains(Role.ADMIN));
+        model.addAttribute("books", books);
 
         return "books";
     }

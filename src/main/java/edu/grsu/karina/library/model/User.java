@@ -28,10 +28,10 @@ public class User implements UserDetails {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<IssuanceRequest> issuanceRequest=new ArrayList<>();
+    private List<IssuanceRequest> issuanceRequest = new ArrayList<>();
 
-    @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name="user_id"))
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
@@ -66,7 +66,6 @@ public class User implements UserDetails {
     public void setContactDetails(String contactDetails) {
         this.contactDetails = contactDetails;
     }
-
 
 
     public long getId() {
@@ -132,5 +131,9 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public int getRoleCount() {
+        return this.roles.size();
     }
 }

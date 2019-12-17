@@ -6,7 +6,7 @@ public class AuthorRequest {
 
     private String firstName;
     private String secondName;
-    //private Date date;
+    private Date date;
 
     public String getFirstName() {
         return firstName;
@@ -24,11 +24,11 @@ public class AuthorRequest {
         this.secondName = secondName;
     }
 
-    /*public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }*/
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
 }
