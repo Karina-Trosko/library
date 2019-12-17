@@ -11,7 +11,25 @@ public class IssuanceRequest {
     private int id;
     private String name;
     private Boolean valid;
+    private Boolean send;
+    private Boolean accept;
 
+    public Boolean getSend() {
+        return send;
+    }
+
+    public void setSend(Boolean send) {
+        this.send = send;
+    }
+
+
+    public Boolean getAccept() {
+        return accept;
+    }
+
+    public void setAccept(Boolean accept) {
+        this.accept = accept;
+    }
     //private  Boolean got;
 
 
@@ -36,28 +54,32 @@ public class IssuanceRequest {
     public Boolean getValid() {
         return valid;
     }
-    public Boolean CheckValid()
-    {
-        Date  currentDate = new Date();
-        long difference = currentDate.getTime()-date.getTime();
-        if(((int)(difference / (24 * 60 * 60 * 1000)))>=1)
+
+    public Boolean CheckValid() {
+        Date currentDate = new Date();
+        long difference = currentDate.getTime() - date.getTime();
+        if (((int) (difference / (24 * 60 * 60 * 1000))) >= 1)
             return false;
         else return true;
     }
+
     public void setValid(Boolean valid) {
         this.valid = valid;
     }
 
-    public IssuanceRequest(){}
+    public IssuanceRequest() {
+    }
+
     public IssuanceRequest(String name, User reader, Book book) {
         this.name = name;
         this.reader = reader;
         this.book = book;
-        SetDateOfIssuance();
+        //SetDateOfIssuance();
     }
-    void SetDateOfIssuance(){
-    this.date=new Date();
-}
+
+    public void SetDateOfIssuance() {
+        this.date = new Date();
+    }
 
     public Book getBook() {
         return book;

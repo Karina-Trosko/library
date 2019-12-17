@@ -10,6 +10,9 @@ import java.util.List;
 public interface IssuanceRequestRepository extends JpaRepository<IssuanceRequest, Integer> {
 
 
-        List<IssuanceRequest> findByName(String name);
+    List<IssuanceRequest> findByName(String name);
 
+    List<IssuanceRequest> findByAccept(Boolean accept);
+
+    List<IssuanceRequest> findBySend(Boolean send);
 }

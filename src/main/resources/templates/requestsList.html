@@ -33,8 +33,8 @@
             <div th:text="${req.name}"></div>
             <p>User name: </p>
             <div th:text="${req.reader.username}"></div>
-            <p>Date: </p>
-            <div th:text="${req.date}"></div>
+            <!--<p>Date: </p>-->
+            <!--<div th:text="${req.date}"></div>-->
         </div>
         <div>
             <div>
@@ -44,6 +44,7 @@
                         <input class="buttonStyle buttonStyle-round" type="submit" value="Delete"/>
                     </form>
                 </div>
+
                 <!--<div>
                 <form th:if="${req.got!=true}"  th:action="@{/request/get}" method="post">
                     <input type="hidden" name="id" th:value="${req.id}"/>
@@ -51,7 +52,14 @@
                     <input class="buttonStyle buttonStyle-round" type="submit" value="OK"/>
                 </form>
             </div>-->
-                <div>
+
+                <div th:if="!${req.accept}">
+                    <form th:action="@{/acceptRequest}" method="post">
+                        <input type="hidden" name="id" th:value="${req.id}"/>
+                        <input class="buttonStyle buttonStyle-round" type="submit" value="Give out"/>
+                    </form>
+                </div>
+                <div th:if="${req.accept}">
                     <form th:action="@{/request/return}" method="post">
                         <input type="hidden" name="id" th:value="${req.id}"/>
                         <input class="buttonStyle buttonStyle-round" type="submit" value="Return"/>

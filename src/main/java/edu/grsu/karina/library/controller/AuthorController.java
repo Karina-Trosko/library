@@ -25,6 +25,7 @@ public class AuthorController {
         model.addAttribute("isEmpl", req.getRoles().contains(Role.EMPLOYEE));
         model.addAttribute("isAd", isAd);
         model.addAttribute("authors", authorRepository.findAll());
+        model.addAttribute("isUs",User.isUser(req));
         return "authors";
     }
 

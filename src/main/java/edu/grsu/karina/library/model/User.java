@@ -136,4 +136,9 @@ public class User implements UserDetails {
     public int getRoleCount() {
         return this.roles.size();
     }
+    public static Boolean isUser(User user) {
+        if (user.getRoles().size()>1)
+            return false;
+        return true;
+    }
 }

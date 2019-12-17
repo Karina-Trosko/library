@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/styles.css}"/>
+</head>
+<body>
+<nav>
+
+        <a th:if="${isEmpl}" th:href="@{/user}">Users</a>
+        <a th:href="@{/books}">Books</a>
+        <a th:href="@{/authors}">Authors</a>
+        <a th:if="${isAd}" th:href="@{/user/employeesList}">Employees</a>
+        <a th:href="@{/user/RequestsList}">My books</a>
+
+        <a th:if="${isEmpl}" th:href="@{/requestsList}">Requests</a>
+        <a th:if="${isEmpl}" th:href="@{/book/create}">Add book</a>
+        <a th:if="${isEmpl}" th:href="@{/author/create}">Add author</a>
+        <a th:if="${isAd}" th:href="@{/user/addemployee}">Add employee</a>
+
+
+</nav>
+<form style="margin: 0% 20% 0% 20%" th:action="@{/logout}" method="post">
+    <input type="submit" class="buttonStyle buttonStyle-round" value="Sign Out"/>
+
+</form>
+<!--<form style="margin: 1% 20% 0% 20%" class="loginFormStyle" th:action="@{/request/search}" method="post">-->
+    <!--<input class="inputStyle" type="text" name="search" placeholder="Search...">-->
+    <!--<button type="submit" class="buttonStyle-round buttonStyle">Search</button>-->
+<!--</form>-->
+<div class="Blocks" th:each="req : ${requests}">
+    <div class="divBookStyle block">
+        <div>
+            <p>Name: </p>
+            <div th:text="${req.name}"></div>
+            <p>User name: </p>
+            <div th:text="${req.reader.username}"></div>
+            <p th:if="${req.accept}">Date: </p>
+            <div th:if="${req.accept}" th:text="${req.date}"></div>
+        </div>
+        <div>
+            <div>
+                <div th:if="!${req.accept}">
+                    <form th:action="@{/request/delete}" method="post">
+                        <input type="hidden" name="id" th:value="${req.id}"/>
+                        <input class="buttonStyle buttonStyle-round" type="submit" value="Delete"/>
+                    </form>
+                </div>
+                <div th:if="!${req.send}">
+                    <form  th:action="@{/sendRequest}" method="post">
+                        <input type="hidden" name="id" th:value="${req.id}"/>
+                        <input class="buttonStyle buttonStyle-round" type="submit" value="Send"/>
+                    </form>
+                </div>
+                <!--<div>-->
+                    <!--<form th:action="@{/request/return}" method="post">-->
+                        <!--<input type="hidden" name="id" th:value="${req.id}"/>-->
+                        <!--<input class="buttonStyle buttonStyle-round" type="submit" value="Return"/>-->
+                    <!--</form>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
