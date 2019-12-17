@@ -25,9 +25,6 @@
     <div class="divBookStyle block">
         <div>
             <div th:text="${user.username}"></div>
-            <div th:each="urole : ${user.roles}">
-                <div th:text="${urole}"></div>
-            </div>
             <div th:if="${user.name!=null}" th:text="${user.name}"></div>
             <div th:if="${user.surname!=null}" th:text="${user.surname}"></div>
             <div th:if="${user.contactDetails!=null}" th:text="${user.contactDetails}"></div>

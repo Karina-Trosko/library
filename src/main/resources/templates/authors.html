@@ -27,12 +27,9 @@
 <div class="Blocks" th:each="author : ${authors}">
     <div class="divBookStyle block">
         <div>
-            <div>Name:
-                <div th:text="${author.firstName}"></div>
-            </div>
-            <div>Surname:
-                <div th:text="${author.secondName}"></div>
-            </div>
+
+            <div th:text="${author.firstName} "></div> <div th:text="${author.secondName}"></div>
+
         </div>
 
         <div>
