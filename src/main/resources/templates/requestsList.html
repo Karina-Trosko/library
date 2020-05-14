@@ -22,7 +22,7 @@
 
     <!--<a th:href="@{/user}">List of users</a>-->
 </form>
-<form style="margin: 1% 20% 0% 20%" class="loginFormStyle" th:action="@{/request/search}" method="post">
+<form class="searchInput"  th:action="@{/request/search}" method="post">
     <input class="inputStyle" type="text" name="search" placeholder="Search...">
     <button type="submit" class="buttonStyle-round buttonStyle">Search</button>
 </form>

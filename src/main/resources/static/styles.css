@@ -47,6 +47,11 @@ a:active {
     padding-top: 3%;
     background: rgba(10, 10, 52, 0.78);
 }
+.searchInput{
+    background: rgba(10, 10, 52, 0.78);
+    margin: 0% 20% 0% 20%;
+
+}
 .buttonStyle{
     background: rgb(249,231,215);
     color: rgba(10, 10, 52, 0.97);
