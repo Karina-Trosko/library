@@ -3,6 +3,7 @@ package edu.grsu.karina.library.config;
 import edu.grsu.karina.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,13 +24,16 @@ private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/registration","/static/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/","/registration","/static/**", "/api/**","/api/book/**", "/login").permitAll()
+                //.antMatchers(HttpMethod.POST, "/api/**")
+                //.permitAll()
+                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                 //.loginProcessingUrl("/login/api")
                 .permitAll()
                 .and()
                 .logout()
