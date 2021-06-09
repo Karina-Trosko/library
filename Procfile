@@ -1,1 +1,0 @@
-web: java -jar target/library-0.0.1-SNAPSHOT.jar -Dserver.port=$PORT
